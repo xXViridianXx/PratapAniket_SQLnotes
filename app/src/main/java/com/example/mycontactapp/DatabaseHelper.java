@@ -19,8 +19,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_NAME_CONTACT + " TEXT)";
 
 
-    public DatabaseHelper(@androidx.annotation.Nullable Context context, @androidx.annotation.Nullable String name, @androidx.annotation.Nullable SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public DatabaseHelper(Context context) {
+        super(context, DATABASE_Name, factory : null, DATABASE_Version);
     }
 
     @Override
