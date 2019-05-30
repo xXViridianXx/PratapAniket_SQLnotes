@@ -1,5 +1,6 @@
 package com.example.mycontactapp;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_NAME_CONTACT + " TEXT)";
 
     public static final String SQL_DELETE_ENTRIES =
-        "DROP TABLE IF EXISTS " + TABLE_NAME;
+        "DROP TABLE IF EXISTS " + TABLE_Name;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_Name,null, DATABASE_Version);
@@ -37,10 +38,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_CREATE_ENTERIES);
+        db.execSQL(SQL_DELETE_ENTRIES);
         Log.d("MyContactApp", "DatabaseHelper: upgraded database " );
         onCreate(db);
     }
+
+    public boolean insertName(String name)
+    {
+        Log.d("MyContactApp", "DatabaseHelper: inserting data" );
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COLUMN_NAME_CONTACT, name);
+        long result = db.insert(TABLE_Name, null, contentValues);
+
+        if (result == -1)
+        {
+            Log.d("MyContactApp", "DatabaseHelper: Contact Insert Failed" );
+            return false;
+        }
+        else
+        {
+            Log.d("MyContactApp", "DatabaseHelper: Contact Insert Passed" );
+            return true;
+        }
+
+    }
+
 
 
 

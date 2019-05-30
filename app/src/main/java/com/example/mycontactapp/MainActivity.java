@@ -17,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d("MyContactApp", "MainActivity: setting up the layout");
         setContentView(R.layout.activity_main);
+
+        myDb = new DatabaseHelper(this);
+        Log.d("MyContactApp", "MainActivity: instantiated databaseHelper");
     }
 
 
@@ -56,6 +59,7 @@ public void showMessage(String title, String message)
 {
     //put log d
 
+    Log.d("MyContactApp", "MainActivity: Message shown");
     AlertDialog.Builder builder = new AlertDialog.Builder((this));
     builder.setCancelable((true));
     builder.setTitle(title);
