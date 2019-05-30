@@ -43,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertName(String name)
+    public boolean insertData(String name)
     {
         Log.d("MyContactApp", "DatabaseHelper: inserting data" );
         SQLiteDatabase db = this.getWritableDatabase();
