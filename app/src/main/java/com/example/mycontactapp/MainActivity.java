@@ -88,7 +88,6 @@ public void showMessage(String title, String message)
 
 
 
-
     public void searchRecord(View view) {
         Log.d("MyContactApp", "MainActivity: launching search");
         Cursor curs = myDb.getAllData();
@@ -120,4 +119,5 @@ public void showMessage(String title, String message)
         }
         showMessage("Search results", buffer.toString());
     }
+
 }
