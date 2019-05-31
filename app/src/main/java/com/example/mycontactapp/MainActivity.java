@@ -7,12 +7,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper myDb;
-    EditText editName;
+    TextView name, phone, address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +21,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d("MyContactApp", "MainActivity: setting up the layout");
         setContentView(R.layout.activity_main);
-        editName = findViewById(R.id.editText_name);
+        name = findViewById(R.id.name);
+        phone = findViewById(R.id.phone);
+        address = findViewById(R.id.address);
 
         myDb = new DatabaseHelper(this);
         Log.d("MyContactApp", "MainActivity: instantiated databaseHelper");
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public void addData (View view)
     {
         Log.d("MyContactApp", "MainActivity: Add contact button pressed");
-        boolean isInserted = myDb.insertData(editName.getText().toString());
+        boolean isInserted = myDb.insertData(name.getText().toString(), phone.getText().toString(), address.getText().toString());
 
         if (isInserted == true)
         {
@@ -79,5 +82,42 @@ public void showMessage(String title, String message)
     AlertDialog.Builder builder = new AlertDialog.Builder((this));
     builder.setCancelable((true));
     builder.setTitle(title);
+    builder.setMessage(message);
+    builder.show();
 }
+
+
+
+
+    public void searchRecord(View view) {
+        Log.d("MyContactApp", "MainActivity: launching search");
+        Cursor curs = myDb.getAllData();
+        StringBuffer buffer = new StringBuffer();
+        //Intent intent = new Intent(this, SearchActivity.class);
+        if (name.getText().toString().isEmpty() && name.getText().toString().isEmpty()
+                && address.getText().toString().isEmpty()) {
+            showMessage("Error", "Nothing to search for!");
+            return;
+        }
+
+        while (curs.moveToNext()){
+            if ((name.getText().toString().isEmpty() || name.getText().toString().equals(curs.getString(1)))
+                    && (phone.getText().toString().isEmpty() || phone.getText().toString().equals(curs.getString(2)))
+                    && (address.getText().toString().isEmpty() || address.getText().toString().equals(curs.getString(3))))
+            {
+                buffer.append("ID: " + curs.getString(0) + "\n" +
+                        "Name: " + curs.getString(1) + "\n" +
+                        "Phone number: " + curs.getString(2) + "\n" +
+                        "Home address: " + curs.getString(3) + "\n\n");
+            }
+        }
+
+        //intent.putExtra(EXTRA_NAME, buffer.toString());
+        //startActivity(intent);
+        if (buffer.toString().isEmpty()) {
+            showMessage("Error", "No matches found");
+            return;
+        }
+        showMessage("Search results", buffer.toString());
+    }
 }
